@@ -1,0 +1,46 @@
+services:
+  ####################################################
+  # OSM API and Database section
+  ####################################################
+  db:
+    image: developmentseed/osmseed-db:0.1.0-0.dev.git.971.hd6f06ed
+    container_name: osm_db
+    # ports:
+    #   - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ../envs/.env.db
+    restart: always
+    networks:
+      - local_network
+
+  web:
+    image: developmentseed/osmseed-web:0.1.0-n793.h03966d1
+    container_name: osm_web
+    env_file:
+      - ../envs/.env.web
+      - ../envs/.env.db
+    command: bash -c "find config/locales/ -type f -exec sed -i 's/OpenStreetMap/Maramech/g' {} + && /var/www/start.sh"
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - local_network
+
+  memcache:
+    image: memcached:latest
+    ports:
+      - '11211:11211'
+    restart: always
+    networks:
+      - local_network
+
+volumes:
+  postgres_data:
+    driver: local
+    name: postgres-data
+
+networks:
+  local_network:
+    external: true

@@ -1,0 +1,23 @@
+services:
+  ####################################################
+  # OSM API and Database section
+  ####################################################
+  db:
+    container_name: production_osm_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  web:
+    container_name: production_osm_web
+    
+  memcache:
+    container_name: production_memcache
+
+
+volumes:
+  postgres_data:
+    driver: local
+    name: production-postgres-data
+
+networks:
+  local_network:
+    external: true
