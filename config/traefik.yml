@@ -1,0 +1,65 @@
+log:
+  level: INFO
+
+entryPoints:
+  port:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: port-secure
+  port-secure:
+    address: ":443"
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: dev@kendallcountyil.gov
+      storage: /etc/traefik/acme/acme.json
+      httpChallenge:
+        entryPoint: port
+
+http:
+  middlewares:
+    secure-headers:
+      headers:
+        # Protects against clickjacking
+        frameDeny: true
+        # Enables XSS protection in older browsers
+        browserXssFilter: true
+        # Prevents browsers from MIME-sniffing (forces declared Content-Type)
+        contentTypeNosniff: true
+        # Enforces HTTPS via HSTS
+        forceSTSHeader: true
+        stsSeconds: 31536000  # 1 year
+        stsIncludeSubdomains: true
+        stsPreload: true
+        # # Trust only known proxy headers (adjust based on your infrastructure)
+        # hostsProxyHeaders: ["X-Forwarded-Host"]
+    
+  routers:
+
+    production_web-router:
+      rule: (Host(`maramech.kendallcountyil.gov`) || Host(`www.maramech.kendallcountyil.gov`))
+      entryPoints:
+        - port-secure
+      service: production_web
+      tls:
+        certResolver: letsencrypt
+      middlewares:
+        - secure-headers
+
+
+    #################### Production Services ####################
+
+  services:
+    production_web:
+      loadBalancer:
+        servers:
+          - url: http://production_osm_web:80
+
+providers:
+  file:
+    filename: /etc/traefik/traefik.yml
+    watch: true
+    
