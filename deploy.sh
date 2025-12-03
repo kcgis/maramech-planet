@@ -10,7 +10,7 @@ export POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1234}
 if [ "$ENVIRONMENT" == "production" ]; then
     COMPOSE_FILES="-f compose/web.base.yml -f compose/web.production.yml"
 else
-    COMPOSE_FILES="-f compose/web.yml"
+    COMPOSE_FILES="-f compose/web.base.yml"
 fi
 
 if [ "$1" == "start" ]; then

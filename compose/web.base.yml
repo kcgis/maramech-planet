@@ -16,7 +16,7 @@ services:
       - local_network
 
   web:
-    image: developmentseed/osmseed-web:0.1.0-n793.h03966d1
+    image: developmentseed/osmseed-web:0.1.0-0.dev.git.976.hca474c9
     container_name: osm_web
     env_file:
       - ../envs/.env.web
@@ -44,3 +44,4 @@ volumes:
 networks:
   local_network:
     external: true
+    

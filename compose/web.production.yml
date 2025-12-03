@@ -12,7 +12,6 @@ services:
   memcache:
     container_name: production_memcache
 
-
 volumes:
   postgres_data:
     driver: local
@@ -21,3 +20,4 @@ volumes:
 networks:
   local_network:
     external: true
+    
