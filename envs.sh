@@ -21,8 +21,9 @@ MAILER_PASSWORD=none
 MAILER_FROM=no-reply@none.org
 MAILER_PORT=587
 NOMINATIM_URL=none
-OPENSTREETMAP_memcache_servers=memcache:11211
+OPENSTREETMAP_memcache_servers=production_osm_memcache:11211
 OPENSTREETMAP_id_key=
 OAUTH_CLIENT_ID=
 OAUTH_KEY=
 ORGANIZATION_NAME=Maramech" > envs/.env.web
+

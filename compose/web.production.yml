@@ -10,7 +10,9 @@ services:
     container_name: production_osm_web
     
   memcache:
-    container_name: production_memcache
+    container_name: production_osm_memcache
+  cgimap:
+    container_name: production_osm_cgimap
 
 volumes:
   postgres_data:

@@ -30,8 +30,22 @@ services:
 
   memcache:
     image: memcached:latest
+    container_name: osm_memcache
     ports:
       - '11211:11211'
+    restart: always
+    networks:
+      - local_network
+
+  cgimap:
+    image: cgimap:latest
+    container_name: osm_cgimap
+    build:
+      context: ../images/cgimap
+      dockerfile: Dockerfile
+    env_file:
+      - ../envs/.env.web
+      - ../envs/.env.db
     restart: always
     networks:
       - local_network

@@ -1,4 +1,4 @@
-# Kendall County OSM Infrastructure Deployment
+# Kendall County OSM Infrastructure Deployment - maramech
 
 This repository contains the deployment configuration and scripts for the OpenStreetMap (OSM) infrastructure for Kendall County.
 
