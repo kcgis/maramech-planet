@@ -38,11 +38,8 @@ services:
       - local_network
 
   cgimap:
-    image: cgimap:latest
+    image: rub21/cgimap:latest
     container_name: osm_cgimap
-    build:
-      context: ../images/cgimap
-      dockerfile: Dockerfile
     env_file:
       - ../envs/.env.web
       - ../envs/.env.db
