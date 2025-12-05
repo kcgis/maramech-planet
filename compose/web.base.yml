@@ -4,7 +4,7 @@ services:
   ####################################################
   db:
     image: developmentseed/osmseed-db:0.1.0-0.dev.git.971.hd6f06ed
-    container_name: osm_db
+    container_name: production_osm_db
     # ports:
     #   - '5432:5432'
     volumes:
@@ -16,21 +16,28 @@ services:
       - local_network
 
   web:
-    image: developmentseed/osmseed-web:0.1.0-0.dev.git.976.hca474c9
-    container_name: osm_web
+    image: developmentseed/osmseed-web:0.1.0-0.dev.git.979.h56ded2d
+    container_name: production_osm_web
+    # volumes:
+    #   - ./settings.yml:/var/www/config/settings.yml
+    #   - ./start.sh:/var/www/start.sh
     env_file:
       - ../envs/.env.web
       - ../envs/.env.db
     command: bash -c "find config/locales/ -type f -exec sed -i 's/OpenStreetMap/Maramech/g' {} + && /var/www/start.sh"
     depends_on:
       - db
+      - memcache
+      - cgimap
+    # ports:
+    #   - '80:80'
     restart: always
     networks:
       - local_network
 
   memcache:
     image: memcached:latest
-    container_name: osm_memcache
+    container_name: production_osm_memcache
     ports:
       - '11211:11211'
     restart: always
@@ -39,7 +46,7 @@ services:
 
   cgimap:
     image: rub21/cgimap:maramech
-    container_name: osm_cgimap
+    container_name: production_osm_cgimap
     # build:
     #   context: ../images/cgimap
     #   dockerfile: Dockerfile

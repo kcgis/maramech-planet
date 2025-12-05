@@ -1,12 +1,11 @@
 #!/bin/bash
-mkdir -p envs/
+mkdir -p envs/ 
 
 # TODO: check other way to set the environment variables
-
 BASE_DOMAIN=maramech.kendallcountyil.gov
 
 ############################## DB ##############################
-echo "POSTGRES_HOST=db
+echo "POSTGRES_HOST=production_osm_db
 POSTGRES_DB=openstreetmap
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" > envs/.env.db
@@ -38,6 +37,6 @@ RAILS_STORAGE_SERVICE=s3
 RAILS_STORAGE_REGION=us-east-1
 RAILS_STORAGE_BUCKET=maramech-website-production
 EXTERNAL_CGIMAP=true
-CGIMAP_URL=production-cgimap-service
+CGIMAP_URL=production_osm_cgimap
 CGIMAP_PORT=80
 PASSENGER_MAX_POOL_SIZE=6" > envs/.env.web

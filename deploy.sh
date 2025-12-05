@@ -1,29 +1,11 @@
 #!/bin/bash
 
-export ENVIRONMENT=${ENVIRONMENT:-development}
-export POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1234}
-
-# Set env vars
 ./envs.sh
 
-# Select compose file(s) based on environment
-if [ "$ENVIRONMENT" == "production" ]; then
-    COMPOSE_FILES="-f compose/web.base.yml -f compose/web.production.yml"
-else
-    COMPOSE_FILES="-f compose/web.base.yml"
-fi
-
 if [ "$1" == "start" ]; then
-    echo "Starting containers in $ENVIRONMENT mode..."
-    echo "Using compose files: $COMPOSE_FILES"
-    docker compose $COMPOSE_FILES up --force-recreate -d
-    
-    echo "Containers started successfully."
-
+    docker compose -f compose/web.base.yml up -d --force-recreate
+    docker compose -f compose/traefik.yml up -d --force-recreate
 elif [ "$1" == "stop" ]; then
-    echo "Stopping containers in $ENVIRONMENT mode..."
-    echo "Using compose files: $COMPOSE_FILES"
-    docker compose $COMPOSE_FILES down
-    echo "Containers stopped successfully."
+    docker compose -f compose/web.base.yml down --remove-orphans
+    docker compose -f compose/traefik.yml down --remove-orphans
 fi
-
